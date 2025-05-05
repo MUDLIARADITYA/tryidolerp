@@ -2,27 +2,39 @@ import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import Usersidebar from "../../Component/Usersidebar";
 
+// ---------- Temporary Leave Store (mock backend state) ----------
+let mockLeaveStore = [
+    { subject: "Sick Leave", message: "Fever and rest", status: "Approved" },
+    { subject: "Emergency", message: "Family issue", status: "Pending" },
+];
+
 // ----------- MOCK API (Replace with real API calls) -------------
 const createLeave = async (data) => {
-    return new Promise((resolve) => setTimeout(() => resolve({ success: true }), 1000));
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            mockLeaveStore.push(data);
+            resolve({ success: true });
+        }, 500);
+    });
 };
 
 const Myleave = async () => {
-    return {
-        data: {
-            success: true,
-            data: [
-                { subject: "Sick Leave", message: "Fever and rest", status: "Approved" },
-                { subject: "Emergency", message: "Family issue", status: "Pending" },
-            ],
-        },
-    };
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                data: {
+                    success: true,
+                    data: mockLeaveStore,
+                },
+            });
+        }, 500);
+    });
 };
 // ----------------------------------------------------------------
 
 const UserLeaveStatus = () => {
     const [leaveRequests, setLeaveRequests] = useState([]);
-    const [newLeaveRequest, setNewLeaveRequest] = useState({ subject: "", message: "", status: "New" });
+    const [newLeaveRequest, setNewLeaveRequest] = useState({ subject: "", message: "", status: "Pending" });
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -52,8 +64,8 @@ const UserLeaveStatus = () => {
 
         try {
             await createLeave(newLeaveRequest);
-            fetchLeaveStatus();
-            setNewLeaveRequest({ subject: "", message: "", status: "New" });
+            fetchLeaveStatus(); // refresh data
+            setNewLeaveRequest({ subject: "", message: "", status: "Pending" });
             setShowModal(false);
         } catch (error) {
             alert("Failed to request leave.");
@@ -61,14 +73,20 @@ const UserLeaveStatus = () => {
     };
 
     return (
-        <div>   
-            <div>
-                <Usersidebar/>
-            </div>
-            <div className="p-6 bg-zinc-100 min-h-screen ml-[250px]">
-
+        <div className="flex">
+            <Usersidebar />
+            <div className="p-6 bg-zinc-100 min-h-screen flex-1 ml-[250px]">
                 <div className="bg-white rounded-lg shadow p-4 overflow-x-auto">
-                    <h1 className="text-2xl font-semibold mb-4">My Leave Status</h1>
+                    <div className="flex justify-between items-center mb-4">
+                        <h1 className="text-2xl font-semibold">My Leave Status</h1>
+                        <button
+                            onClick={() => setShowModal(true)}
+                            className="bg-blue-600 text-white px-6 py-2 rounded-full flex items-center gap-2"
+                        >
+                            <FaPlus /> Apply for Leave
+                        </button>
+                    </div>
+
                     <table className="min-w-full table-auto text-center">
                         <thead>
                             <tr className="bg-blue-200 text-blue-900">
@@ -82,19 +100,11 @@ const UserLeaveStatus = () => {
                                 <tr key={index} className="border-b">
                                     <td className="px-4 py-2">{leave.subject}</td>
                                     <td className="px-4 py-2">{leave.message}</td>
-                                    <td className="px-4 py-2">{leave.status}</td>
+                                    <td className={`px-4 py-2 font-semibold ${leave.status === "Pending" ? "text-red-600" : "text-green-600"}`}>
+                                        {leave.status}
+                                    </td>
                                 </tr>
                             ))}
-                            <tr>
-                                <td colSpan="3" className="pt-4 text-right pr-4">
-                                    <button
-                                        onClick={() => setShowModal(true)}
-                                        className="bg-blue-600 text-white px-6 py-2 rounded-full flex items-center gap-2"
-                                    >
-                                        <FaPlus /> Apply for Leave
-                                    </button>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -131,7 +141,6 @@ const UserLeaveStatus = () => {
                 )}
             </div>
         </div>
-
     );
 };
 

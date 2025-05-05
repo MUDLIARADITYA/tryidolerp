@@ -11,6 +11,10 @@ import Allnotification from "./Pages/User/Allnotification";
 import MarkAttendance from "./Pages/User/MarkAttendance";
 import MyAttendance from "./Pages/User/MyAttendance";
 import LeaveStatus from "./Pages/User/LeaveStatus";
+import Leaves from "./Pages/Admin/Leaves";
+import Download from "./Pages/Admin/Download";
+import Alerts from "./Pages/Admin/Alerts";
+import Adduser from "./Pages/Admin/Adduser";
 
 function App() {
   return (
@@ -57,7 +61,44 @@ function App() {
         element={<LeaveStatus/>} 
         />
 
+<Route path="/leaves"
+        element={
+         <Layout>
+          <Leaves/>
+         </Layout>
+        } 
+        />
 
+<Route path="/download"
+        element={<Layout> 
+          <Download/>
+        </Layout>} 
+        />
+
+<Route path="/add-user"
+
+    
+      element={
+      <Layout>
+ <Adduser/>
+      </Layout>
+       } 
+      
+        
+        />
+<Route path="/download"
+        element={<Download/>} 
+        />
+
+<Route path="/alerts"
+        element={
+          <Layout>
+            <Alerts/>
+          </Layout>
+        } 
+        />
+
+        
 <Route path="/notifications"
         element={<Allnotification/>} 
         />
