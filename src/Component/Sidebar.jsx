@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaUsers,
@@ -12,8 +12,9 @@ import {
 } from "react-icons/fa";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false); // Track sidebar visibility on mobile
+  const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef();
+  const location = useLocation();
 
   const navItems = [
     { name: "Dashboard", icon: <FaTachometerAlt />, route: "/dashboard" },
@@ -24,14 +25,9 @@ const Sidebar = () => {
     { name: "Leaves", icon: <FaCalendarAlt />, route: "/leaves" },
   ];
 
-  // Close sidebar when clicking outside (mobile only)
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        isOpen &&
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target)
-      ) {
+      if (isOpen && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
@@ -42,75 +38,60 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Hamburger Icon for Mobile */}
+      {/* Hamburger for Mobile */}
       <div
         className="md:hidden absolute top-4 left-4 cursor-pointer z-50"
-        onClick={() => setIsOpen(!isOpen)} // Toggle open/close
+        onClick={() => setIsOpen(!isOpen)}
       >
-        <FaBars className="text-2xl text-blue-600" />
+        <FaBars className="text-2xl text-[#05445e]" />
       </div>
 
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className={`h-screen fixed top-0 left-0 bg-white p-4 z-50 transition-all duration-300 ease-in-out
-          ${isOpen ? "w-64" : "w-16"} // Adjusted width for collapsed state
-          md:w-64 md:block ${isOpen ? "opacity-100" : "opacity-0"} md:opacity-100`} // Adjust opacity for collapse
+        className={`h-screen fixed top-0 left-0 bg-[#ffffff] p-4 z-50 transition-all duration-300 ease-in-out
+        ${isOpen ? "w-64" : "w-64"} md:w-64 md:block`}
       >
         {/* Logo */}
-        <div className="bg-white rounded-md p-3 mb-6 flex items-center justify-center h-16">
+        <div className="rounded-md p-3 mb-6 flex items-center justify-center h-16">
           <img src="img/logo.png" alt="Logo" className="max-h-full" />
         </div>
 
         {/* Navigation */}
-        <nav className="flex flex-col gap-3">
-          {navItems.map(({ name, icon, route }) => (
-            <Link
-              to={route}
-              key={name}
-              className={`flex items-center gap-3 px-4 py-2 rounded-md ${
-                name === "Dashboard"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
-              } transition`}
-            >
-              <span className="text-lg">{icon}</span>
-              {/* Show text only when sidebar is open */}
-              <span
-                className={`text-sm font-medium transition-opacity ${
-                  isOpen ? "opacity-100" : "opacity-0"
-                }`}
+        <nav className="flex flex-col gap-3 text-black">
+          {navItems.map(({ name, icon, route }) => {
+            const isActive = location.pathname === route;
+            return (
+              <Link
+                to={route}
+                key={name}
+                className={`flex items-center gap-3 px-4 py-2 rounded-md transition 
+                  ${isActive ? "bg-[#189ab4]" : ""}`}
               >
-                {name}
-              </span>
-            </Link>
-          ))}
+                <span className="text-lg">{icon}</span>
+                <span className="text-sm font-medium">{name}</span>
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Logout */}
         <div className="mt-6">
           <button
-            className="flex items-center gap-3 px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 w-full transition"
-            onClick={() => console.log("Logged out")} // Handle logout action
+            className="flex items-center gap-3 px-4 py-2 rounded-md bg-red-600 text-white w-full transition"
+            onClick={() => console.log("Logged out")}
           >
             <FaSignOutAlt className="text-lg" />
-            {/* Show text only when sidebar is open */}
-            <span
-              className={`text-sm font-medium transition-opacity ${
-                isOpen ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              Logout
-            </span>
+            <span className="text-sm font-medium">Logout</span>
           </button>
         </div>
       </div>
 
-      {/* Overlay to close sidebar when clicked */}
+      {/* Overlay for Mobile */}
       {isOpen && (
         <div
           className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-20"
-          onClick={() => setIsOpen(false)} // Close sidebar on overlay click
+          onClick={() => setIsOpen(false)}
         />
       )}
     </>
