@@ -45,7 +45,7 @@ const Dashboard = () => {
       {/* <Sidebar /> */}
 
       {/* Main Content */}
-      <div className="flex-1 border-2 border-red-500">
+      <div className="flex-1">
         {/* <div className="mb-[70px]">
           <Navbar />
         </div> */}
@@ -67,7 +67,7 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
-        <div  className="h-[100vh] bg-amber-200">dd</div>
+        
       </div>
 
 
