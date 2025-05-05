@@ -7,6 +7,10 @@ import Viewall from "./Pages/Admin/Viewall";
 import Usersidebar from "./Component/Usersidebar";
 import Sidebar from "./Component/Sidebar";
 import User from "./Pages/User/User";
+import Allnotification from "./Pages/User/Allnotification";
+import MarkAttendance from "./Pages/User/MarkAttendance";
+import MyAttendance from "./Pages/User/MyAttendance";
+import LeaveStatus from "./Pages/User/LeaveStatus";
 
 function App() {
   return (
@@ -33,9 +37,29 @@ function App() {
 
           }
         />
+
+        
         
         <Route path="/user"
         element={<User/>} 
+        />
+
+<Route path="/markattendance"
+        element={<MarkAttendance/>} 
+        />
+
+<Route path="/myattendance"
+        element={<MyAttendance/>} 
+        />
+
+
+<Route path="/leavestatus"
+        element={<LeaveStatus/>} 
+        />
+
+
+<Route path="/notifications"
+        element={<Allnotification/>} 
         />
 
 
