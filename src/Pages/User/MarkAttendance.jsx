@@ -1,8 +1,11 @@
 import React from 'react'
+import Usersidebar from '../../Component/Usersidebar'
 
 const MarkAttendance = () => {
   return (
-    <div>MarkAttendance</div>
+    <div>
+        <Usersidebar/>
+    </div>
   )
 }
 
