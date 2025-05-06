@@ -20,7 +20,7 @@ const Sidebar = () => {
     { name: "Dashboard", icon: <FaTachometerAlt />, route: "/dashboard" },
     { name: "View All", icon: <FaUsers />, route: "/view-all" },
     { name: "Add User", icon: <FaUserPlus />, route: "/add-user" },
-    { name: "Download", icon: <FaDownload />, route: "/download" },
+    // { name: "Download", icon: <FaDownload />, route: "/download" },
     { name: "Alerts", icon: <FaBell />, route: "/alerts" },
     { name: "Leaves", icon: <FaCalendarAlt />, route: "/leaves" },
   ];

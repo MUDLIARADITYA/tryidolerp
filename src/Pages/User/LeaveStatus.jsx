@@ -4,8 +4,18 @@ import Usersidebar from "../../Component/Usersidebar";
 
 // ---------- Temporary Leave Store (mock backend state) ----------
 let mockLeaveStore = [
-    { subject: "Sick Leave", message: "Fever and rest", status: "Approved" },
-    { subject: "Emergency", message: "Family issue", status: "Pending" },
+    {
+        subject: "Sick Leave",
+        message: "Fever and rest",
+        status: "Approved",
+        reason: "Approved because you submitted a doctor's note.",
+    },
+    {
+        subject: "Emergency",
+        message: "Family issue",
+        status: "Pending",
+        reason: "",
+    },
 ];
 
 // ----------- MOCK API (Replace with real API calls) -------------
@@ -34,7 +44,12 @@ const Myleave = async () => {
 
 const UserLeaveStatus = () => {
     const [leaveRequests, setLeaveRequests] = useState([]);
-    const [newLeaveRequest, setNewLeaveRequest] = useState({ subject: "", message: "", status: "Pending" });
+    const [newLeaveRequest, setNewLeaveRequest] = useState({
+        subject: "",
+        message: "",
+        status: "Pending",
+        reason: "",
+    });
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -65,7 +80,7 @@ const UserLeaveStatus = () => {
         try {
             await createLeave(newLeaveRequest);
             fetchLeaveStatus(); // refresh data
-            setNewLeaveRequest({ subject: "", message: "", status: "Pending" });
+            setNewLeaveRequest({ subject: "", message: "", status: "Pending", reason: "" });
             setShowModal(false);
         } catch (error) {
             alert("Failed to request leave.");
@@ -93,6 +108,7 @@ const UserLeaveStatus = () => {
                                 <th className="px-4 py-2">Subject</th>
                                 <th className="px-4 py-2">Message</th>
                                 <th className="px-4 py-2">Status</th>
+                                <th className="px-4 py-2">Admin's Reason</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,8 +116,15 @@ const UserLeaveStatus = () => {
                                 <tr key={index} className="border-b">
                                     <td className="px-4 py-2">{leave.subject}</td>
                                     <td className="px-4 py-2">{leave.message}</td>
-                                    <td className={`px-4 py-2 font-semibold ${leave.status === "Pending" ? "text-red-600" : "text-green-600"}`}>
+                                    <td
+                                        className={`px-4 py-2 font-semibold ${
+                                            leave.status === "Pending" ? "text-red-600" : "text-green-600"
+                                        }`}
+                                    >
                                         {leave.status}
+                                    </td>
+                                    <td className="px-4 py-2 text-sm text-gray-600">
+                                        {leave.reason ? leave.reason : <em className="text-gray-400">-</em>}
                                     </td>
                                 </tr>
                             ))}
@@ -129,10 +152,16 @@ const UserLeaveStatus = () => {
                                 className="w-full border p-2 mb-3 rounded"
                             />
                             <div className="flex justify-end gap-3">
-                                <button onClick={() => setShowModal(false)} className="bg-gray-500 text-white px-4 py-2 rounded">
+                                <button
+                                    onClick={() => setShowModal(false)}
+                                    className="bg-gray-500 text-white px-4 py-2 rounded"
+                                >
                                     Cancel
                                 </button>
-                                <button onClick={handleRequestLeave} className="bg-blue-600 text-white px-4 py-2 rounded">
+                                <button
+                                    onClick={handleRequestLeave}
+                                    className="bg-blue-600 text-white px-4 py-2 rounded"
+                                >
                                     Apply
                                 </button>
                             </div>
