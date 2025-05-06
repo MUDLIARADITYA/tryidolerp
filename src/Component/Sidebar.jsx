@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaUsers,
   FaUserPlus,
-  FaDownload,
   FaBell,
   FaCalendarAlt,
   FaSignOutAlt,
@@ -15,11 +14,12 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef();
   const location = useLocation();
+  const navigate = useNavigate(); // Initialize the useNavigate hook
 
   const navItems = [
     { name: "Dashboard", icon: <FaTachometerAlt />, route: "/dashboard" },
-    { name: "View All", icon: <FaUsers />, route: "/view-all" },
-    { name: "Add User", icon: <FaUserPlus />, route: "/add-user" },
+    { name: "Attendance", icon: <FaUsers />, route: "/view-all" },
+    { name: "Employee", icon: <FaUserPlus />, route: "/add-user" },
     // { name: "Download", icon: <FaDownload />, route: "/download" },
     { name: "Alerts", icon: <FaBell />, route: "/alerts" },
     { name: "Leaves", icon: <FaCalendarAlt />, route: "/leaves" },
@@ -35,6 +35,11 @@ const Sidebar = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
+
+  const handleLogout = () => {
+    // Add any logout logic here (e.g., clear user data or tokens)
+    navigate("/"); // Navigate to the root route after logout
+  };
 
   return (
     <>
@@ -79,7 +84,7 @@ const Sidebar = () => {
         <div className="mt-6">
           <button
             className="flex items-center gap-3 px-4 py-2 rounded-md bg-red-600 text-white w-full transition"
-            onClick={() => console.log("Logged out")}
+            onClick={handleLogout} // Call handleLogout function on click
           >
             <FaSignOutAlt className="text-lg" />
             <span className="text-sm font-medium">Logout</span>
