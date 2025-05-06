@@ -2,6 +2,10 @@ import React from "react";
 import Sidebar from "../../Component/Sidebar";
 import Navbar from "../../Component/Navbar";
 import { FaProcedures, FaUserMd, FaDollarSign, FaAmbulance } from 'react-icons/fa';
+import AddUser from "./Adduser";
+import Leaves from "./Leaves";
+import Dashboarduser from "./Dashboarduser";
+import Dashboadleaves from "./Dashboadleaves";
 
 const cardData = [
   {
@@ -67,9 +71,20 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
+        <div className="bg-amber-300 h-[100vh]">
+          <div className="h-[50vh]">
+            <Dashboarduser/>
+            
+          </div>
+          
+          <div className=" h-[50vh]">
+            <Dashboadleaves/>
+          </div>
+        </div>
+
         
       </div>
-
+      
 
     </div>
   );
