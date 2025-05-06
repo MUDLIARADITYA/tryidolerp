@@ -6,44 +6,68 @@ const mockLoggedInUsers = ["John Doe", "Jane Smith", "Mark Lee"];
 const Alert = () => {
   const [alerts, setAlerts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false); // To determine if we are editing
+  const [editIndex, setEditIndex] = useState(null); // To track the index of the alert being edited
   const [formData, setFormData] = useState({
     title: "",
     message: "",
     recipient: "For All",
   });
 
+  // Load alerts from localStorage on mount
   useEffect(() => {
-    const mockAlerts = [
-      {
-        sentAt: "5/5/2025, 2:43:20 PM",
-        sentTo: "For All",
-        title: "Alert",
-        message: "Sample message",
-      },
-    ];
-    setAlerts(mockAlerts);
+    const storedAlerts = localStorage.getItem("alerts");
+    if (storedAlerts) {
+      setAlerts(JSON.parse(storedAlerts));
+    }
   }, []);
+
+  // Update localStorage whenever alerts change
+  useEffect(() => {
+    if (alerts.length > 0) {
+      localStorage.setItem("alerts", JSON.stringify(alerts));
+    }
+  }, [alerts]);
 
   const handleInputChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleCreateAlert = () => {
-    const newAlert = {
-      sentAt: new Date().toLocaleString(),
-      sentTo: formData.recipient,
-      title: formData.title,
-      message: formData.message,
-    };
-    setAlerts((prev) => [...prev, newAlert]);
+    if (isEditMode) {
+      const updatedAlerts = [...alerts];
+      updatedAlerts[editIndex] = {
+        ...updatedAlerts[editIndex],
+        title: formData.title,
+        message: formData.message,
+        sentTo: formData.recipient,
+      };
+      setAlerts(updatedAlerts);
+      localStorage.setItem("alerts", JSON.stringify(updatedAlerts));
+      setIsEditMode(false); // Reset edit mode
+      setEditIndex(null); // Reset edit index
+    } else {
+      const newAlert = {
+        sentAt: new Date().toLocaleString(),
+        sentTo: formData.recipient,
+        title: formData.title,
+        message: formData.message,
+      };
+      const updatedAlerts = [...alerts, newAlert];
+      setAlerts(updatedAlerts);
+      localStorage.setItem("alerts", JSON.stringify(updatedAlerts));
+    }
     setFormData({ title: "", message: "", recipient: "For All" });
     setIsModalOpen(false);
   };
 
   const handleDelete = (index) => {
-    const updatedAlerts = [...alerts];
-    updatedAlerts.splice(index, 1);
-    setAlerts(updatedAlerts);
+    const confirmDelete = window.confirm("Are you sure you want to delete this alert?");
+    if (confirmDelete) {
+      const updatedAlerts = alerts.filter((_, i) => i !== index);
+      setAlerts(updatedAlerts);
+      localStorage.setItem("alerts", JSON.stringify(updatedAlerts));
+    }
   };
 
   const handleEdit = (index) => {
@@ -54,9 +78,8 @@ const Alert = () => {
       recipient: alertToEdit.sentTo,
     });
     setIsModalOpen(true);
-    const updatedAlerts = [...alerts];
-    updatedAlerts.splice(index, 1);
-    setAlerts(updatedAlerts);
+    setIsEditMode(true); // Set edit mode to true
+    setEditIndex(index); // Track the index of the alert being edited
   };
 
   return (
@@ -66,7 +89,7 @@ const Alert = () => {
         <h1 className="text-2xl font-semibold text-gray-800">Notifications</h1>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-[#2e61d8] hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-full shadow flex items-center gap-2"
+          className="bg-blue-600 text-white px-6 py-2 rounded-md shadow hover:bg-blue-700 transition"
         >
           💬 Generate Alert
         </button>
@@ -98,9 +121,7 @@ const Alert = () => {
             ) : (
               alerts.map((alert, index) => (
                 <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium border border-black">
-                    {index + 1}
-                  </td>
+                  <td className="px-4 py-3 font-medium border border-black">{index + 1}</td>
                   <td className="px-6 py-3 border border-black">{alert.sentAt}</td>
                   <td className="px-6 py-3 border border-black">{alert.sentTo}</td>
                   <td className="px-6 py-3 border border-black">{alert.title}</td>
@@ -134,7 +155,7 @@ const Alert = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
-            <h2 className="text-xl font-semibold mb-4">Create New Alert</h2>
+            <h2 className="text-xl font-semibold mb-4">{isEditMode ? "Edit Alert" : "Create New Alert"}</h2>
 
             <div className="space-y-4">
               <div>
@@ -189,7 +210,7 @@ const Alert = () => {
                 onClick={handleCreateAlert}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
               >
-                Create
+                {isEditMode ? "Save Changes" : "Create"}
               </button>
             </div>
           </div>

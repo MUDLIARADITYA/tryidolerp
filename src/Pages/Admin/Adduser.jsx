@@ -21,6 +21,7 @@ const AddUser = () => {
     };
   }
 
+  // Load users from localStorage when component mounts
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem('users'));
     if (storedUsers) {
@@ -28,15 +29,20 @@ const AddUser = () => {
     }
   }, []);
 
+  // Save users to localStorage whenever the users list changes
   useEffect(() => {
-    localStorage.setItem('users', JSON.stringify(users));
+    if (users.length > 0) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
   }, [users]);
 
+  // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle registration (add/edit user)
   const handleRegister = (e) => {
     e.preventDefault();
     if (isEditing) {
@@ -49,9 +55,10 @@ const AddUser = () => {
       setUsers((prev) => [...prev, formData]);
     }
     setFormData(initialForm());
-    setShowForm(false);
+    setShowForm(false); // Close the form/modal
   };
 
+  // Handle deletion of a user
   const handleDelete = (index) => {
     if (window.confirm('Are you sure you want to delete this employee?')) {
       const updatedUsers = users.filter((_, i) => i !== index);
@@ -59,6 +66,7 @@ const AddUser = () => {
     }
   };
 
+  // Handle editing a user
   const handleEdit = (index) => {
     setFormData(users[index]);
     setIsEditing(true);
@@ -66,12 +74,14 @@ const AddUser = () => {
     setShowForm(true);
   };
 
+  // Handle viewing a user's details
   const handleView = (user) => {
     setViewUser(user);
   };
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
+      {/* Header Section */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-semibold text-gray-800">All Employees</h1>
         <button
@@ -114,9 +124,8 @@ const AddUser = () => {
                   <td className="px-4 py-2 border border-black">{user.fullName}</td>
                   <td className="px-4 py-2 border border-black">{user.email}</td>
                   <td className="px-4 py-2 border border-black">{user.position}</td>
-                  <td className="px-4 py-2 border border-black">
-                    <div className="flex gap-3">
-                      <button
+                  <td className="px-4 py-2 border border-black gap-3">
+                    <button
                         onClick={() => handleView(user)}
                         title="View"
                         className="text-blue-500 hover:text-blue-700 transition transform hover:scale-110"
@@ -137,7 +146,6 @@ const AddUser = () => {
                       >
                         <Trash2 size={18} />
                       </button>
-                    </div>
                   </td>
                 </tr>
               ))
@@ -150,12 +158,10 @@ const AddUser = () => {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <form
-            className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md space-y-4 relative"
+            className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md space-y-4"
             onSubmit={handleRegister}
           >
-            <h2 className="text-xl font-semibold text-center">
-              {isEditing ? 'Edit User' : 'Register New Employee'}
-            </h2>
+            <h2 className="text-xl font-semibold text-center">{isEditing ? 'Edit User' : 'Register New Employee'}</h2>
             <input type="text" name="fullName" placeholder="Full Name" value={formData.fullName} onChange={handleInputChange} className="w-full px-3 py-2 border rounded" required />
             <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleInputChange} className="w-full px-3 py-2 border rounded" required />
             <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleInputChange} className="w-full px-3 py-2 border rounded" required />
@@ -170,8 +176,8 @@ const AddUser = () => {
             </button>
             <button
               type="button"
-              className="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-xl"
-              onClick={() => setShowForm(false)}
+              className="absolute top-2 right-2 text-gray-600"
+              onClick={() => setShowForm(false)} // Close the modal
             >
               ✖
             </button>
