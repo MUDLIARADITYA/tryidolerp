@@ -32,7 +32,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/view-all"
+        <Route path="/allattendance"
           element={
             <Layout>
 
@@ -48,7 +48,7 @@ function App() {
         element={<User/>} 
         />
 
-<Route path="/markattendance"
+<Route path="/userattendance"
         element={<MarkAttendance/>} 
         />
 
@@ -57,11 +57,11 @@ function App() {
         />
 
 
-<Route path="/leavestatus"
+<Route path="/leave"
         element={<LeaveStatus/>} 
         />
 
-<Route path="/leaves"
+<Route path="/employeeleaves"
         element={
          <Layout>
           <Leaves/>
@@ -75,7 +75,7 @@ function App() {
         </Layout>} 
         />
 
-<Route path="/add-user"
+<Route path="/reg"
 
     
       element={
@@ -90,7 +90,7 @@ function App() {
         element={<Download/>} 
         />
 
-<Route path="/alerts"
+<Route path="/notifications"
         element={
           <Layout>
             <Alerts/>

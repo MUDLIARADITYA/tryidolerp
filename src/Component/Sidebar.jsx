@@ -18,11 +18,11 @@ const Sidebar = () => {
 
   const navItems = [
     { name: "Dashboard", icon: <FaTachometerAlt />, route: "/dashboard" },
-    { name: "Attendance", icon: <FaUsers />, route: "/view-all" },
-    { name: "Employee", icon: <FaUserPlus />, route: "/add-user" },
+    { name: "Attendance", icon: <FaUsers />, route: "/allattendance" },
+    { name: "Employee", icon: <FaUserPlus />, route: "/reg" },
     // { name: "Download", icon: <FaDownload />, route: "/download" },
-    { name: "Alerts", icon: <FaBell />, route: "/alerts" },
-    { name: "Leaves", icon: <FaCalendarAlt />, route: "/leaves" },
+    { name: "Alerts", icon: <FaBell />, route: "/notifications" },
+    { name: "Leaves", icon: <FaCalendarAlt />, route: "/employeeleaves" },
   ];
 
   useEffect(() => {
@@ -38,6 +38,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     // Add any logout logic here (e.g., clear user data or tokens)
+    localStorage.removeItem("token");
     navigate("/"); // Navigate to the root route after logout
   };
 

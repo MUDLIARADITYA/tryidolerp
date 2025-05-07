@@ -14,10 +14,10 @@ const Usersidebar = () => {
   const sidebarRef = useRef();
 
   const navItems = [
-    { name: "All Notifications", icon: <FaTachometerAlt />, route: "/notifications" },
-    { name: "Mark Attendance", icon: <FaUsers />, route: "/markattendance" },
+    { name: "All Notifications", icon: <FaTachometerAlt />, route: "/user" },
+    { name: "Mark Attendance", icon: <FaUsers />, route: "/userattendance" },
     { name: "My Attendance", icon: <FaUserPlus />, route: "/myattendance" },
-    { name: "Leave Status", icon: <FaBell />, route: "/leavestatus" },
+    { name: "Leave Status", icon: <FaBell />, route: "/leave" },
   ];
 
   // Close sidebar on outside click (mobile only)
