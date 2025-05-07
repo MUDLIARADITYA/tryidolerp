@@ -1,12 +1,3 @@
-# React + Vite
+# It's Tuition
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+At itsTUITION, we are more than just a tuition provider—we are a partner in your success. Our franchise model is designed to empower local tuition centers with unmatched resources, exclusive access to registered students, and a powerful branding platform that guarantees growth. We understand the unique needs of each center and tailor our solutions to ensure profitability and scalability. Our comprehensive support system includes marketing strategies, student acquisition, and operational assistance, allowing you to focus on delivering quality education. With a proven track record and a strong presence in the education sector, partnering with itsTUITION is a smart investment that maximizes your potential while ensuring consistent results. We are committed to your success because when you grow, we grow together.
