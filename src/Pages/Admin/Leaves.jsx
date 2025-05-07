@@ -24,8 +24,8 @@ const Leaves = () => {
     const reason = prompt(`Please enter reason for ${newStatus.toLowerCase()}:`);
     if (!reason) return;
 
-    const updatedLeaves = leaves.map((leave) =>
-      leave.id === id ? { ...leave, status: newStatus, reason } : leave
+   const updatedLeaves = leaves.map((leave) =>
+      leave.id === id  ? { ...leave, status: newStatus, reason } : leave
     );
     setLeaves(updatedLeaves);
   };
