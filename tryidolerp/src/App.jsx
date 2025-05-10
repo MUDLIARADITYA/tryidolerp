@@ -15,6 +15,7 @@ import Leaves from "./Pages/Admin/Leaves";
 import Download from "./Pages/Admin/Download";
 import Alerts from "./Pages/Admin/Alerts";
 import Adduser from "./Pages/Admin/Adduser";
+import SuccessPage from "./Component/SuccessPage";
 
 function App() {
   return (
@@ -45,8 +46,13 @@ function App() {
         
         
         <Route path="/user"
-        element={<User/>} 
+        element={<Allnotification/>} 
         />
+
+<Route path="/success"
+        element={<SuccessPage />} 
+        />
+
 
 <Route path="/userattendance"
         element={<MarkAttendance/>} 

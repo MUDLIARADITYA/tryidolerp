@@ -1,34 +1,67 @@
 // import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
 
 // const Leaves = () => {
-//   const [leaves, setLeaves] = useState([
+//   const navigate = useNavigate();
+
+//   const [leaves] = useState([
 //     {
 //       id: 1,
-//       name: "murlidhar",
-//       subject: "casual leave",
+//       name: "Murlidhar",
+//       subject: "Casual Leave",
 //       message: "I need 1 day leave",
-//       status: "Pending",
-//       reason: "",
 //     },
 //     {
 //       id: 2,
-//       name: "murlidhar",
+//       name: "Murlidhar",
 //       subject: "Sick Leave",
 //       message: "I am unwell and need 2 days off.",
-//       status: "Rejected",
-//       reason: "You have already taken enough sick leave.",
 //     },
 //   ]);
 
-//   const handleAction = (id, newStatus) => {
-//     const reason = prompt(`Please enter reason for ${newStatus.toLowerCase()}:`);
-//     if (!reason) return;
+//   return (
+//     <div className="p-4">
+//       {/* View All Button */}
+      
 
-//     const updatedLeaves = leaves.map((leave) =>
-//       leave.id === id ? { ...leave, status: newStatus, reason } : leave
-//     );
-//     setLeaves(updatedLeaves);
-//   };
+//       <div className="overflow-x-auto rounded-md shadow-md">
+//         <table className="min-w-full table-auto border-collapse">
+//           <thead className="bg-blue-200 text-blue-900 font-bold">
+//             <tr>
+//               <th className="px-4 py-3 text-left">Applicant Name</th>
+//               <th className="px-4 py-3 text-left">Subject</th>
+//               <th className="px-4 py-3 text-left">Message</th>
+//             </tr>
+//           </thead>
+//           <tbody className="bg-white text-gray-800">
+//             {leaves.map((leave) => (
+//               <tr key={leave.id} className="border-t border-gray-200">
+//                 <td className="px-4 py-3">{leave.name}</td>
+//                 <td className="px-4 py-3 capitalize">{leave.subject}</td>
+//                 <td className="px-4 py-3">{leave.message}</td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+
+//         <div className="flex justify-end mb-4 mt-2">
+//           <button
+//             onClick={() => navigate("/employeeleaves")}
+//             className="bg-blue-600 text-white px-6 py-2 rounded-md shadow hover:bg-blue-700 transition"
+//           >
+//             View All
+//           </button>
+//         </div>
+
+
+
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Leaves;
+
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +79,7 @@ import { TiThMenu } from "react-icons/ti";
 import { RxCross1 } from "react-icons/rx";
 import { DoLeave, getAllLeaves } from "../../api/leave.js";
 
-const Leaves = () => {
+const Dashboardleaves = () => {
   const navigate = useNavigate();
   const [leaves, setLeaves] = useState([]);
   const [error, setError] = useState("");
@@ -133,67 +166,46 @@ const Leaves = () => {
 
   return (
     <div className="p-4">
-      <div className="overflow-x-auto shadow-md">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold text-gray-800 mt-5">Employees on leave</h1>
+        
+      </div>
+      <div className="bg-white shadow overflow-x-auto">
         <table className="min-w-full border border-black border-collapse">
           <thead>
             <tr className="bg-blue-200 text-gray-700">
               <th className="px-4 py-3 text-left border border-black">S. No</th>
-              <th className="px-4 py-3 text-left border border-black">Applicant Name</th>
+              <th className="px-4 py-3 text-left border border-black">Employee Name</th>
               <th className="px-4 py-3 text-left border border-black">Subject</th>
               <th className="px-4 py-3 text-left border border-black">Message</th>
-              <th className="px-4 py-3 text-left border border-black">Status</th>
-              <th className="px-4 py-3 text-left border border-black">Reason</th>
-              <th className="px-4 py-3 text-left border border-black">Actions</th>
+              
             </tr>
           </thead>
-          <tbody className="btext-center text-sm">
-            {leaves.map((leave, index) => (
+          <tbody>
+            {leaves.slice(0, 5).map((leave, index) => (
               <tr key={leave._id} className="hover:bg-gray-50">
                 <td className="px-4 py-2 border border-black">{index + 1}</td>
                 <td className="px-4 py-2 border border-black">{leave?.userId?.name}</td>
                 <td className="px-4 py-2 border border-black capitalize">{leave.subject}</td>
                 <td className="px-4 py-2 border border-black">{leave.message}</td>
-                <td className="px-4 py-2 border border-black">{leave.status}</td>
-                {/* <td className="px-4 py-3 font-semibold">
-                  {leave.status === "Approved" && <span className="text-green-600">{leave.status}</span>}
-                  {leave.status === "Rejected" && <span className="text-red-600">{leave.status}</span>}
-                  {leave.status === "Pending" && <span className="text-yellow-600">{leave.status}</span>}
-                </td> */}
-                <td className="px-4 py-2 border border-black">
-                  {leave.reason || <em className="text-gray-400">-</em>}
-                </td>
-                <td className="px-4 py-2 border border-black">
-                  {leave.status === "pending" ? (
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() =>
-                          handleLeaveAction(leave._id, "approved")
-                        }
-                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
-                      >
-                        Approve
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleLeaveAction(leave._id, "rejected")
-                        }
-                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                      >
-                        Reject
-                      </button>
-                    </div>
-                  ) : (
-                    <span className="text-sm text-gray-400 italic">Action Taken</span> 
-                  )}
-                </td>
+                 
+                
+                
               </tr>
             ))}
           </tbody>
         </table>
-        {error && <p className="text-red-500 mt-4">{error}</p>}
+        <div className="flex justify-end mb-4 mt-2">
+          <button
+            onClick={() => navigate("/employeeleaves")}
+            className="bg-blue-600 text-white px-6 py-2 rounded-md shadow hover:bg-blue-700 transition"
+          >
+            View All
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Leaves;
+export default Dashboardleaves;

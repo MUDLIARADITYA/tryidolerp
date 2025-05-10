@@ -33,6 +33,9 @@ const generateToken = (user) => {
 // Admin-only: Register a user
 exports.registerUser = async (req, res) => {
     try {
+
+        // console.log("Received registration payload:", req.body);
+
         const { name, email, password, employeeId, position, userType } = req.body;
 
         // Check if user already exists
@@ -44,6 +47,8 @@ exports.registerUser = async (req, res) => {
         await user.save();
         res.status(201).json({ message: 'User registered successfully', user });
     } catch (err) {
+        console.error("Error in registerUser:", err);
+
         res.status(500).json({ message: 'Error registering user', error: err.message });
     }
 };
@@ -63,6 +68,7 @@ exports.updateUser = async (req, res) => {
         user.email = email || user.email;
         user.position = position || user.position;
         user.userType = userType || user.userType;
+        // user.employeeId = employeeId || user.employeeId;     // As we dont want to update EmployeeId
 
         await user.save();
         res.status(200).json({ message: 'User updated successfully', user });

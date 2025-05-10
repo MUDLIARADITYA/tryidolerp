@@ -2,6 +2,7 @@ const Alert = require('../models/alert');
 
 // Create an alert (Admin only)
 const createAlert = async (req, res) => {
+    console.log('Authenticated user:', req.user); 
     const { title, message, targetUser } = req.body;
 
     if (!title || !message) {
@@ -36,6 +37,7 @@ const getAllAlerts = async (req, res) => {
             .populate('createdBy', 'name email') // Populate admin details
             .sort({ createdAt: -1 });
 
+        console.log(alerts);  // Log alerts to check the array content
         res.status(200).json({
             success: true,
             count: alerts.length,

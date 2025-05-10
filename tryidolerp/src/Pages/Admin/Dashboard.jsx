@@ -1,58 +1,63 @@
 import React from "react";
 import Sidebar from "../../Component/Sidebar";
 import Navbar from "../../Component/Navbar";
-import { FaProcedures, FaUserMd, FaDollarSign, FaAmbulance } from 'react-icons/fa';
+import { FaProcedures, FaUserMd, FaDollarSign,FaAmbulance } from 'react-icons/fa';
+import { FaUser } from "react-icons/fa";
 import AddUser from "./Adduser";
 import Leaves from "./Leaves";
 import Dashboarduser from "./Dashboarduser";
-import Dashboadleaves from "./Dashboadleaves";
+import Dashboardleaves from "./Dashboardleaves";
+
+
 
 const cardData = [
   {
     id: 'patients',
-    icon: <FaProcedures size={24} className="text-purple-500" />,
-    value: '3,256',
-    label: 'Total Patients',
+    
+    icon: <FaUser size={24} className="text-purple-500" />,
+    value: '8',
+    label: 'Total Employees',
     bg: 'bg-purple-100',
   },
   {
     id: 'staff',
-    icon: <FaUserMd size={24} className="text-blue-400" />,
-    value: '394',
-    label: 'Available Staff',
+    icon: <FaUser size={24} className="text-blue-400" />,
+    value: '5',
+    label: 'Available Employees',
     bg: 'bg-blue-100',
   },
   {
     id: 'costs',
-    icon: <FaDollarSign size={24} className="text-orange-400" />,
-    value: '$2,536',
+    icon: <FaUser size={24} className="text-orange-400" />,
+    value: '3',
 
 
-    label: 'Avg Treat. Costs',
+    label: 'Employees on leave',
     bg: 'bg-orange-100',
   },
   {
     id: 'cars',
-    icon: <FaAmbulance size={24} className="text-pink-400" />,
-    value: '38',
-    label: 'Available Cars',
+    icon: <FaUser size={24} className="text-pink-400" />,
+    value: '2',
+    label: 'Number of Admins',
     bg: 'bg-pink-100',
   },
 ];
 
 const Dashboard = () => {
-  return (
-    <div className="flex min-h-screen  ">
-      {/* Sidebar - Stays fixed on the left */}
 
-      
-      {/* <Sidebar /> */}
+
+
+
+
+
+
+
+  return (
+    <div className="flex min-h-screen">
 
       {/* Main Content */}
       <div className="flex-1">
-        {/* <div className="mb-[70px]">
-          <Navbar />
-        </div> */}
         
         {/* Directly placing the Hero card content here */}
         <div className="w-full p-6 bg-white rounded-lg shadow-sm">
@@ -65,7 +70,7 @@ const Dashboard = () => {
                 <div className="p-3 bg-white rounded-full shadow">{icon}</div>
                 <div className="text-right">
                   <div className="text-xl font-semibold">{value}</div>
-                  <div className="text-sm text-gray-600">{label}</div>
+                  <div className="text-bold text-gray-800">{label}</div>
                 </div>
               </div>
             ))}
@@ -78,7 +83,7 @@ const Dashboard = () => {
           </div>
           
           <div className=" h-[50vh]">
-            <Dashboadleaves/>
+            <Dashboardleaves/>
           </div>
         </div>
 

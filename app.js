@@ -11,6 +11,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const leaveRoutes = require("./routes/leaveRoutes");
 const alertRoutes = require("./routes/alertRoutes");
 
+const path = require('path');
 
 const app = express();
 
@@ -26,7 +27,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json({ limit: '50mb' }));
 
 // Serve static files (images) from the "public/images" directory
-app.use('/images', express.static('public/uploads'));
+app.use('/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
 
 
 // Define routes

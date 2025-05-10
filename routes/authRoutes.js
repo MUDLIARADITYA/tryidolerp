@@ -15,7 +15,7 @@ const { adminOnly } = require('../middlewares/roleMiddleware');
 const router = express.Router();
 
 // Routes for user registration and login
-router.post('/register', protect, registerUser); // No protection for registration
+router.post('/register', registerUser); // No protection for registration
 router.post('/login', loginUser); // User login
 router.post('/logout', protect, logout); // Protect logout route to clear token
 router.get('/profile', protect, getUserProfile); // Protect profile route

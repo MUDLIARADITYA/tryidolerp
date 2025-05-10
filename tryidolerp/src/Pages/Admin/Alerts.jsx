@@ -1,49 +1,109 @@
 import React, { useState, useEffect } from "react";
 import { Pencil, Trash2 } from "lucide-react";
+import axios from "axios"; // Import axios
 
 const mockLoggedInUsers = ["John Doe", "Jane Smith", "Mark Lee"];
 
 const Alert = () => {
   const [alerts, setAlerts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false); // To determine if we are editing
-  const [editIndex, setEditIndex] = useState(null); // To track the index of the alert being edited
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     message: "",
     recipient: "For All",
   });
+  const [users, setUsers] = useState([]);
 
-  // Load alerts from localStorage on mount
-  useEffect(() => {
-    const storedAlerts = localStorage.getItem("alerts");
-    if (storedAlerts) {
-      setAlerts(JSON.parse(storedAlerts));
+  const axiosInstance = axios.create({
+    baseURL: "http://localhost:5000/api/auth",
+  });
+
+  axiosInstance.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+    return config;
+  });
+
+  // Load users from MongoDB
+  useEffect(() => {
+    axiosInstance
+      .get("http://localhost:5000/api/auth/all")
+      .then((res) => {
+        // console.log("GET /all response:", res.data);
+        const users = Array.isArray(res.data.users) ? res.data.users : res.data;
+        setUsers(users);
+        console.log(res.data.users[1].name);
+      })
+      .catch((err) => {
+        console.error("Error fetching users:", err);
+        setUsers([]); // fallback to empty array
+      });
   }, []);
 
-  // Update localStorage whenever alerts change
+  // Load alerts from the backend on mount
   useEffect(() => {
-    if (alerts.length > 0) {
-      localStorage.setItem("alerts", JSON.stringify(alerts));
-    }
-  }, [alerts]);
+    const fetchAlerts = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        console.log(token);
 
+        const response = await axios.get(
+          "http://localhost:5000/api/alert/all",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response.data);
+        // setAlerts(response.data.data);
+        const alertsData = response.data.data || [];
+        setAlerts(Array.isArray(alertsData) ? alertsData : []);
+      } catch (error) {
+        console.error("Error fetching alerts", error);
+      }
+    };
+
+    fetchAlerts();
+  }, []);
+
+  // Handle input changes
   const handleInputChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleCreateAlert = () => {
+  // Create or update alert
+  const handleCreateAlert = async () => {
     if (isEditMode) {
-      const updatedAlerts = [...alerts];
-      updatedAlerts[editIndex] = {
-        ...updatedAlerts[editIndex],
+      const updatedAlert = {
+        ...alerts[editIndex],
         title: formData.title,
         message: formData.message,
         sentTo: formData.recipient,
       };
-      setAlerts(updatedAlerts);
-      localStorage.setItem("alerts", JSON.stringify(updatedAlerts));
+
+      try {
+        const token = localStorage.getItem("token");
+        await axios.put(
+          `http://localhost:5000/api/alert/${alerts[editIndex]._id}`,
+          updatedAlert,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ); // PUT request to update alert
+        const updatedAlerts = [...alerts];
+        updatedAlerts[editIndex] = updatedAlert;
+        setAlerts(updatedAlerts);
+      } catch (error) {
+        console.error("Error updating alert", error);
+      }
+
       setIsEditMode(false); // Reset edit mode
       setEditIndex(null); // Reset edit index
     } else {
@@ -53,23 +113,53 @@ const Alert = () => {
         title: formData.title,
         message: formData.message,
       };
-      const updatedAlerts = [...alerts, newAlert];
-      setAlerts(updatedAlerts);
-      localStorage.setItem("alerts", JSON.stringify(updatedAlerts));
+
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.post(
+          "http://localhost:5000/api/alert/",
+          newAlert,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ); // POST request to create alert
+        setAlerts((prevAlerts) => [...prevAlerts, response.data.data]);
+      } catch (error) {
+        console.error("Error creating alert", error);
+      }
     }
+
     setFormData({ title: "", message: "", recipient: "For All" });
     setIsModalOpen(false);
   };
 
-  const handleDelete = (index) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this alert?");
+  // Handle delete alert
+  const handleDelete = async (index) => {
+    const token = localStorage.getItem("token");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this alert?"
+    );
     if (confirmDelete) {
-      const updatedAlerts = alerts.filter((_, i) => i !== index);
-      setAlerts(updatedAlerts);
-      localStorage.setItem("alerts", JSON.stringify(updatedAlerts));
+      try {
+        await axios.delete(
+          `http://localhost:5000/api/alert/${alerts[index]._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ); // DELETE request to remove alert
+        const updatedAlerts = alerts.filter((_, i) => i !== index);
+        setAlerts(updatedAlerts);
+      } catch (error) {
+        console.error("Error deleting alert", error);
+      }
     }
   };
 
+  // Handle edit alert
   const handleEdit = (index) => {
     const alertToEdit = alerts[index];
     setFormData({
@@ -78,8 +168,8 @@ const Alert = () => {
       recipient: alertToEdit.sentTo,
     });
     setIsModalOpen(true);
-    setIsEditMode(true); // Set edit mode to true
-    setEditIndex(index); // Track the index of the alert being edited
+    setIsEditMode(true);
+    setEditIndex(index);
   };
 
   return (
@@ -119,33 +209,47 @@ const Alert = () => {
                 </td>
               </tr>
             ) : (
-              alerts.map((alert, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium border border-black">{index + 1}</td>
-                  <td className="px-6 py-3 border border-black">{alert.sentAt}</td>
-                  <td className="px-6 py-3 border border-black">{alert.sentTo}</td>
-                  <td className="px-6 py-3 border border-black">{alert.title}</td>
-                  <td className="px-6 py-3 border border-black">{alert.message}</td>
-                  <td className="px-6 py-3 border border-black">
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => handleEdit(index)}
-                        className="text-blue-600 hover:text-blue-800 transition-colors"
-                        title="Edit"
-                      >
-                        <Pencil size={18} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(index)}
-                        className="text-red-600 hover:text-red-800 transition-colors"
-                        title="Delete"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
+              alerts.map((alert, index) => {
+                // Move the logic for targetEmployee and targetName here
+                const targetEmployee = users.find(
+                  (emp) => emp._id === alert.recipient
+                ); // Find the employee by _id
+                const targetName = targetEmployee
+                  ? targetEmployee.name
+                  : "For All";
+
+                return (
+                  <tr key={alert._id} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium border border-black">
+                      {index + 1}
+                    </td>
+                    <td className="px-6 py-3 border border-black">
+                      {new Date(alert.createdAt).toLocaleString()}
+                    </td>
+                    <td className="px-6 py-3 border border-black">
+                      {targetName}
+                    </td>
+                    {/* Use targetName here */}
+                    <td className="px-6 py-3 border border-black">
+                      {alert.title}
+                    </td>
+                    <td className="px-6 py-3 border border-black">
+                      {alert.message}
+                    </td>
+                    <td className="px-6 py-3 border border-black">
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => handleDelete(index)}
+                          className="text-red-600 hover:text-red-800 transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
@@ -155,7 +259,9 @@ const Alert = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
-            <h2 className="text-xl font-semibold mb-4">{isEditMode ? "Edit Alert" : "Create New Alert"}</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              {isEditMode ? "Edit Alert" : "Create New Alert"}
+            </h2>
 
             <div className="space-y-4">
               <div>
@@ -190,9 +296,9 @@ const Alert = () => {
                   className="w-full border rounded px-3 py-2"
                 >
                   <option value="For All">For All</option>
-                  {mockLoggedInUsers.map((user, idx) => (
-                    <option key={idx} value={user}>
-                      {user}
+                  {users.map((user) => (
+                    <option key={user._id} value={user._id}>
+                      {user.name}
                     </option>
                   ))}
                 </select>
