@@ -38,7 +38,7 @@ const AddUser = () => {
   useEffect(() => {
     axiosInstance.get("http://localhost:5000/api/auth/all")
   .then(res => {
-    console.log("GET /all response:", res.data);  
+    // console.log("GET /all response:", res.data);  
     const users = Array.isArray(res.data.users) ? res.data.users : res.data;
     setUsers(users);
   })

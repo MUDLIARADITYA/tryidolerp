@@ -155,7 +155,7 @@ const Viewall = () => {
           const reversedRecords = [
             ...response.data.attendanceRecords,
           ].reverse();
-          console.log(response.data, 123);
+          // console.log(response.data, 123);
           setAttendanceRecords(reversedRecords);
           setFilteredRecords(reversedRecords);
         }

@@ -36,7 +36,7 @@ const Alert = () => {
         // console.log("GET /all response:", res.data);
         const users = Array.isArray(res.data.users) ? res.data.users : res.data;
         setUsers(users);
-        console.log(res.data.users[1].name);
+        // console.log(res.data.users[1].name);
       })
       .catch((err) => {
         console.error("Error fetching users:", err);
@@ -49,7 +49,7 @@ const Alert = () => {
     const fetchAlerts = async () => {
       try {
         const token = localStorage.getItem("token");
-        console.log(token);
+        // console.log(token);
 
         const response = await axios.get(
           "http://localhost:5000/api/alert/all",
@@ -59,7 +59,7 @@ const Alert = () => {
             },
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         // setAlerts(response.data.data);
         const alertsData = response.data.data || [];
         setAlerts(Array.isArray(alertsData) ? alertsData : []);
