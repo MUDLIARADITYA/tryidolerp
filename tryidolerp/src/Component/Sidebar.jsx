@@ -100,6 +100,7 @@ const Sidebar = () => {
           onClick={() => setIsOpen(false)}
         />
       )}
+      
     </>
   );
 };

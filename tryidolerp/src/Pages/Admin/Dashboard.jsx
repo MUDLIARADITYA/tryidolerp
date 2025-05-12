@@ -86,11 +86,7 @@ const Dashboard = () => {
             <Dashboardleaves/>
           </div>
         </div>
-
-        
       </div>
-      
-
     </div>
   );
 };
