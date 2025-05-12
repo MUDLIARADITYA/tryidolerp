@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Leaves = () => {
+  const Leaves = () => {
   const [leaves, setLeaves] = useState([
     {
       id: 1,

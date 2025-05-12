@@ -17,19 +17,29 @@ const Leaves = () => {
       subject: "Sick Leave",
       message: "I am unwell and need 2 days off.",
     },
+     {
+      id: 2,
+      name: "Murlidhar",
+      subject: "Sick Leave",
+      message: "I am unwell and need 2 days off.",
+    },
+     {
+      id: 2,
+      name: "Murlidhar",
+      subject: "Sick Leave",
+      message: "I am unwell and need 2 days off.",
+    },
+     {
+      id: 2,
+      name: "Murlidhar",
+      subject: "Sick Leave",
+      message: "I am unwell and need 2 days off.",
+    },
   ]);
 
   return (
-    <div className="p-4">
-      {/* View All Button */}
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={() => navigate("/leaves")}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          View All
-        </button>
-      </div>
+    <div className="p-4  h-[70vh]">
+     
 
       <div className="overflow-x-auto rounded-md shadow-md">
         <table className="min-w-full table-auto border-collapse">
@@ -50,6 +60,18 @@ const Leaves = () => {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-end h-[15vh]">
+           {/* View All Button */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => navigate("/leaves")}
+          className="bg-blue-600 text-white w-[130px] h-[50px]  mt-4 rounded hover:bg-blue-700 transition"
+        >
+          View All
+        </button>
+      </div>
+          
+        </div>
       </div>
     </div>
   );

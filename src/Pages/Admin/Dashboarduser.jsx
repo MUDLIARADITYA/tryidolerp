@@ -55,18 +55,10 @@ const Dashboarduser = () => {
   const handleDelete = (index) => {};
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6  h-[60vh]">
       {/* Table */}
-          {/* View All Button */}
-      <div className="flex justify-end mt-4">
-        <button
-          className="bg-blue-600 text-white px-6 py-2 rounded-md shadow hover:bg-blue-700 transition"
-          onClick={() => navigate('/add-user')}
-        >
-          View All
-        </button>
-      </div>
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
+       
+      <div className="bg-white  shadow overflow-x-auto">
         <table className="min-w-full">
           <thead>
             <tr className="bg-blue-200 text-gray-700">
@@ -101,6 +93,18 @@ const Dashboarduser = () => {
         </table>
       </div>
 
+            <div className="flex justify-end  h-[15vh]">
+                 {/* View All Button */}
+      <div className="flex justify-end mt-4">
+        <button
+          className="bg-blue-600 text-white w-[130px] h-[50px]  mt-4 rounded hover:bg-blue-700 transition"
+          onClick={() => navigate('/add-user')}
+        >
+          View All
+        </button>
+      </div>
+
+            </div>
      
 
       {/* View Modal */}
@@ -111,7 +115,7 @@ const Dashboarduser = () => {
             <p><strong>Name:</strong> {viewUser.fullName}</p>
             <p><strong>Email:</strong> {viewUser.email}</p>
             <p><strong>Employee ID:</strong> {viewUser.employeeID}</p>
-            <p><strong>Position:</strong> {viewUser.position}</p>
+            <p><strong>Position:</strong> {viewUser.position}</p>++
             <p><strong>User Type:</strong> {viewUser.userType}</p>
             <div className="text-right mt-4">
               <button
