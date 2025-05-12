@@ -55,6 +55,41 @@ const Dashboard = () => {
 
   return (
     <div className="flex min-h-screen">
+    {/* Sidebar could go here if needed */}
+  
+    {/* Main Content */}
+    <div className="flex-1 flex flex-col">
+      {/* Navbar could go here */}
+  
+      {/* Stats Cards */}
+      <div className="w-full p-6 bg-white rounded-lg shadow-sm">
+        <div className="flex flex-wrap gap-4 justify-between">
+          {cardData.map(({ id, icon, value, label, bg }) => (
+            <div
+              key={id}
+              className={`flex-1 min-w-[180px] flex items-center justify-between p-4 rounded-xl shadow-sm ${bg}`}
+            >
+              <div className="p-3 bg-white rounded-full shadow">{icon}</div>
+              <div className="text-right">
+                <div className="text-xl font-semibold">{value}</div>
+                <div className="text-sm text-gray-600">{label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+  
+      {/* Dynamic Content Section */}
+      <div className="p-6 h-[50vh] space-y-6 flex-1">
+        {/* User Table - Will grow based on content */}
+        <div className="bg-white rounded-lg shadow p-4">
+          <Dashboarduser />
+        </div>
+  
+        {/* Leave Table - Will grow based on content */}
+        <div className="bg-white rounded-lg shadow p-4">
+          <Dashboadleaves />
+    <div className="flex min-h-screen">
 
       {/* Main Content */}
       <div className="flex-1">
@@ -88,6 +123,8 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+  </div>
+  
   </div>
   
   );
