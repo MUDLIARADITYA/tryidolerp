@@ -20,8 +20,98 @@ import React, { useState } from "react";
     },
   ]);
 
+<<<<<<< HEAD
   const handleAction = (id, newStatus) => {
     const reason = prompt(`Please enter reason for ${newStatus.toLowerCase()}:`);
+=======
+//   const handleAction = (id, newStatus) => {
+//     const reason = prompt(`Please enter reason for ${newStatus.toLowerCase()}:`);
+//     if (!reason) return;
+
+//     const updatedLeaves = leaves.map((leave) =>
+//       leave.id === id ? { ...leave, status: newStatus, reason } : leave
+//     );
+//     setLeaves(updatedLeaves);
+//   };
+
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { HiOutlineDownload } from "react-icons/hi";
+import { MdDashboardCustomize, MdMessage } from "react-icons/md";
+import { AiOutlineUserAdd } from "react-icons/ai";
+import { FaPowerOff } from "react-icons/fa6";
+import { FaUsersViewfinder } from "react-icons/fa6";
+// import logo from "../assets/logo.jpg";
+import { FaBell } from "react-icons/fa";
+import { SlCalender } from "react-icons/sl";
+import { TiThMenu } from "react-icons/ti";
+// import { ImCross } from "react-icons/im";
+import { RxCross1 } from "react-icons/rx";
+import { DoLeave, getAllLeaves } from "../../api/leave.js";
+
+
+const Leaves = () => {
+  const navigate = useNavigate();
+  const [leaves, setLeaves] = useState([]);
+  const [error, setError] = useState("");
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/");
+    } else {
+      fetchLeaves();
+    }
+  }, []);
+
+  const fetchLeaves = async () => {
+    try {
+      const response = await getAllLeaves();
+      //   export const getAllLeaves = async () => {
+      //     return API.get("/leave/");
+      // };
+      // axios.get("http://localhost:5000/api/leave/", {
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+      //   },
+      // })
+      // console.log(response.data);
+      setLeaves(response.data.data);
+    } catch (err) {
+      setError("Failed to fetch leave requests");
+    }
+  };
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  // const handleNotification = () => {
+  //   navigate("/notifications");
+  // };
+
+  // const handleLeave = () => {
+  //   navigate("/employeeleaves");
+  // };
+
+  // const handleDashboard = () => {
+  //   navigate("/dashboard");
+  // };
+
+  // const handleUserDetails = () => navigate("/reg");
+
+  // const handleLogOut = () => {
+  //   localStorage.removeItem("token");
+  //   navigate("/");
+  // };
+
+  // const handleAttendance = () => navigate("/allattendance");
+
+  // const handleDownload = () => navigate("/download");
+
+  const handleLeaveAction = async (leaveId, action) => {
+    const reason = prompt(`Please enter reason for ${action.toLowerCase()}:`)
+>>>>>>> f2f1ccdf9a3503ba65a4d2c1528dc26545a8ae50
     if (!reason) return;
 
    const updatedLeaves = leaves.map((leave) =>
