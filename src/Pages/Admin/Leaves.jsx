@@ -1,31 +1,27 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 
-  const Leaves = () => {
-  const [leaves, setLeaves] = useState([
-    {
-      id: 1,
-      name: "murlidhar",
-      subject: "casual leave",
-      message: "I need 1 day leave",
-      status: "Pending",
-      reason: "",
-    },
-    {
-      id: 2,
-      name: "murlidhar",
-      subject: "Sick Leave",
-      message: "I am unwell and need 2 days off.",
-      status: "Rejected",
-      reason: "You have already taken enough sick leave.",
-    },
-  ]);
+// const Leaves = () => {
+//   const [leaves, setLeaves] = useState([
+//     {
+//       id: 1,
+//       name: "murlidhar",
+//       subject: "casual leave",
+//       message: "I need 1 day leave",
+//       status: "Pending",
+//       reason: "",
+//     },
+//     {
+//       id: 2,
+//       name: "murlidhar",
+//       subject: "Sick Leave",
+//       message: "I am unwell and need 2 days off.",
+//       status: "Rejected",
+//       reason: "You have already taken enough sick leave.",
+//     },
+//   ]);
 
-<<<<<<< HEAD
-  const handleAction = (id, newStatus) => {
-    const reason = prompt(`Please enter reason for ${newStatus.toLowerCase()}:`);
-=======
 //   const handleAction = (id, newStatus) => {
-//     const reason = prompt(`Please enter reason for ${newStatus.toLowerCase()}:`);
+//     const reason = prompt(Please enter reason for ${newStatus.toLowerCase()}:);
 //     if (!reason) return;
 
 //     const updatedLeaves = leaves.map((leave) =>
@@ -50,12 +46,10 @@ import { TiThMenu } from "react-icons/ti";
 import { RxCross1 } from "react-icons/rx";
 import { DoLeave, getAllLeaves } from "../../api/leave.js";
 
-
 const Leaves = () => {
   const navigate = useNavigate();
   const [leaves, setLeaves] = useState([]);
   const [error, setError] = useState("");
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -74,7 +68,7 @@ const Leaves = () => {
       // };
       // axios.get("http://localhost:5000/api/leave/", {
       //   headers: {
-      //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+      //     Authorization: Bearer ${localStorage.getItem("token")},
       //   },
       // })
       // console.log(response.data);
@@ -110,68 +104,93 @@ const Leaves = () => {
   // const handleDownload = () => navigate("/download");
 
   const handleLeaveAction = async (leaveId, action) => {
-    const reason = prompt(`Please enter reason for ${action.toLowerCase()}:`)
->>>>>>> f2f1ccdf9a3503ba65a4d2c1528dc26545a8ae50
+    const reason = prompt(Please enter reason for ${action.toLowerCase()}:)
     if (!reason) return;
-
-   const updatedLeaves = leaves.map((leave) =>
-      leave.id === id  ? { ...leave, status: newStatus, reason } : leave
+    try {
+      // await DoLeave(leaveId, action);
+      await axios.put(
+        http://localhost:5000/api/leave/${leaveId},
+        {
+          status: action,
+          reason: reason,
+        },
+        {
+          headers: {
+            Authorization: Bearer ${localStorage.getItem("token")},
+          },
+        }
+      );
+      const updatedLeaves = leaves.map((leave) =>
+        leave.id === leaveId ? { ...leave, status: action, reason } : leave
     );
     setLeaves(updatedLeaves);
+    fetchLeaves();
+    } catch (err) {
+      console.log(err);
+      setError(Failed to ${action} leave);
+    }
   };
 
   return (
     <div className="p-4">
-      <div className="overflow-x-auto rounded-md shadow-md">
-        <table className="min-w-full table-auto border-collapse">
-          <thead className="bg-blue-200 text-blue-900 font-bold">
-            <tr>
-              <th className="px-4 py-3 text-left">Applicant Name</th>
-              <th className="px-4 py-3 text-left">Subject</th>
-              <th className="px-4 py-3 text-left">Message</th>
-              <th className="px-4 py-3 text-left">Status</th>
-              <th className="px-4 py-3 text-left">Reason</th>
-              <th className="px-4 py-3 text-left">Actions</th>
+      <div className="overflow-x-auto shadow-md">
+        <table className="min-w-full border border-black border-collapse">
+          <thead>
+            <tr className="bg-blue-200 text-gray-700">
+              <th className="px-4 py-3 text-left border border-black">S. No</th>
+              <th className="px-4 py-3 text-left border border-black">Applicant Name</th>
+              <th className="px-4 py-3 text-left border border-black">Subject</th>
+              <th className="px-4 py-3 text-left border border-black">Message</th>
+              <th className="px-4 py-3 text-left border border-black">Status</th>
+              <th className="px-4 py-3 text-left border border-black">Reason</th>
+              <th className="px-4 py-3 text-left border border-black">Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white text-gray-800">
-            {leaves.map((leave) => (
-              <tr key={leave.id} className="border-t border-gray-200">
-                <td className="px-4 py-3">{leave.name}</td>
-                <td className="px-4 py-3 capitalize">{leave.subject}</td>
-                <td className="px-4 py-3">{leave.message}</td>
-                <td className="px-4 py-3 font-semibold">
+          <tbody className="btext-center text-sm">
+            {leaves.map((leave, index) => (
+              <tr key={leave._id} className="hover:bg-gray-50">
+                <td className="px-4 py-2 border border-black">{index + 1}</td>
+                <td className="px-4 py-2 border border-black">{leave?.userId?.name}</td>
+                <td className="px-4 py-2 border border-black capitalize">{leave.subject}</td>
+                <td className="px-4 py-2 border border-black">{leave.message}</td>
+                <td className="px-4 py-2 border border-black">{leave.status}</td>
+                {/* <td className="px-4 py-3 font-semibold">
                   {leave.status === "Approved" && <span className="text-green-600">{leave.status}</span>}
                   {leave.status === "Rejected" && <span className="text-red-600">{leave.status}</span>}
                   {leave.status === "Pending" && <span className="text-yellow-600">{leave.status}</span>}
-                </td>
-                <td className="px-4 py-3 text-sm text-gray-600">
+                </td> */}
+                <td className="px-4 py-2 border border-black">
                   {leave.reason || <em className="text-gray-400">-</em>}
                 </td>
-                <td className="px-4 py-3">
-                  {leave.status === "Pending" ? (
+                <td className="px-4 py-2 border border-black">
+                  {leave.status === "pending" ? (
                     <div className="flex gap-2">
                       <button
-                        onClick={() => handleAction(leave.id, "Approved")}
+                        onClick={() =>
+                          handleLeaveAction(leave._id, "approved")
+                        }
                         className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
                       >
                         Approve
                       </button>
                       <button
-                        onClick={() => handleAction(leave.id, "Rejected")}
+                        onClick={() =>
+                          handleLeaveAction(leave._id, "rejected")
+                        }
                         className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
                       >
                         Reject
                       </button>
                     </div>
                   ) : (
-                    <span className="text-sm text-gray-400 italic">Action Taken</span>
+                    <span className="text-sm text-gray-400 italic">Action Taken</span> 
                   )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {error && <p className="text-red-500 mt-4">{error}</p>}
       </div>
     </div>
   );
