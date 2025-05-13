@@ -93,8 +93,8 @@ const MyAttendance = () => {
   const fetchProfile = async (token) => {
     try {
       const response = await axios.get(
-        // "https://attendancebackend-5j69.onrender.com/api/auth/profile",
         "http://localhost:5000/api/auth/profile",
+        // "https://attendance-backend-hs02.onrender.com/api/auth/profile",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -119,8 +119,8 @@ const MyAttendance = () => {
   const fetchAttendanceData = async (id, token) => {
     try {
       const response = await axios.get(
-        // `https://attendancebackend-5j69.onrender.com/api/attendance/${id}`,
         `http://localhost:5000/api/attendance/${id}`,
+        // `https://attendance-backend-hs02.onrender.com/api/attendance/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -335,6 +335,7 @@ const MyAttendance = () => {
                       <td className="border px-4 py-2">
                         <a
                           href={`http://localhost:5000/uploads/${record.image}`}
+                          // href={`https://attendance-backend-hs02.onrender.com/uploads/${record.image}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-yellow-500 hover:underline"

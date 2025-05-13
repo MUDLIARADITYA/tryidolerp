@@ -17,8 +17,9 @@ exports.protect = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET); // Ensure you have JWT_SECRET in your environment variables
 
         // Fetch the user from the database using the decoded token's ID
-        const user = await User.findById(decoded.id).select('-password'); // Exclude password field
-        // console.log(user);
+        // const user = await User.findById(decoded.id).select('-password'); // Exclude password field
+        const user = await User.findById(decoded.id).select('name email employeeId position userType createdAt').lean(); // Exclude password field
+        console.log(user.userType);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

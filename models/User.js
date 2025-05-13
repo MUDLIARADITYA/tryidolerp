@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
     employeeId: { type: String, required: true, unique: true },
     position: { type: String, required: true },
     userType: { type: String, enum: ['admin', 'user'], default: 'user' },
+}, {
+    timestamps: true
 });
 
 // Hash password before saving the user

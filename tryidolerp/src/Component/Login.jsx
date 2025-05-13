@@ -95,7 +95,7 @@ function Login() {
     try {
       
       const response = await login(formData);
-      console.log(formData.email)
+      // console.log(formData.email)
       const { token, userType } = response.data;
 
       localStorage.setItem("token", token);

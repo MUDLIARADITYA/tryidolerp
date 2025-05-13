@@ -18,6 +18,7 @@ const Alert = () => {
 
   const axiosInstance = axios.create({
     baseURL: "http://localhost:5000/api/auth",
+    // baseURL: "https://attendance-backend-hs02.onrender.com/api/auth",
   });
 
   axiosInstance.interceptors.request.use((config) => {
@@ -32,6 +33,7 @@ const Alert = () => {
   useEffect(() => {
     axiosInstance
       .get("http://localhost:5000/api/auth/all")
+      // .get("https://attendance-backend-hs02.onrender.com/api/auth/all")
       .then((res) => {
         // console.log("GET /all response:", res.data);
         const users = Array.isArray(res.data.users) ? res.data.users : res.data;
@@ -53,6 +55,7 @@ const Alert = () => {
 
         const response = await axios.get(
           "http://localhost:5000/api/alert/all",
+          // "https://attendance-backend-hs02.onrender.com/api/alert/all",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -83,13 +86,14 @@ const Alert = () => {
         ...alerts[editIndex],
         title: formData.title,
         message: formData.message,
-        sentTo: formData.recipient,
+        targetUser: formData.recipient,
       };
 
       try {
         const token = localStorage.getItem("token");
         await axios.put(
           `http://localhost:5000/api/alert/${alerts[editIndex]._id}`,
+          // `https://attendance-backend-hs02.onrender.com/api/alert/${alerts[editIndex]._id}`,
           updatedAlert,
           {
             headers: {
@@ -109,7 +113,7 @@ const Alert = () => {
     } else {
       const newAlert = {
         sentAt: new Date().toLocaleString(),
-        sentTo: formData.recipient,
+        targetUser: formData.recipient === "For All" ? null : formData.recipient,
         title: formData.title,
         message: formData.message,
       };
@@ -118,6 +122,7 @@ const Alert = () => {
         const token = localStorage.getItem("token");
         const response = await axios.post(
           "http://localhost:5000/api/alert/",
+          // "https://attendance-backend-hs02.onrender.com/api/alert/",
           newAlert,
           {
             headers: {
@@ -145,6 +150,7 @@ const Alert = () => {
       try {
         await axios.delete(
           `http://localhost:5000/api/alert/${alerts[index]._id}`,
+          // `https://attendance-backend-hs02.onrender.com/api/alert/${alerts[index]._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -212,7 +218,7 @@ const Alert = () => {
               alerts.map((alert, index) => {
                 // Move the logic for targetEmployee and targetName here
                 const targetEmployee = users.find(
-                  (emp) => emp._id === alert.recipient
+                  (emp) => emp._id === alert.targetUser
                 ); // Find the employee by _id
                 const targetName = targetEmployee
                   ? targetEmployee.name
@@ -225,6 +231,7 @@ const Alert = () => {
                     </td>
                     <td className="px-6 py-3 border border-black">
                       {new Date(alert.createdAt).toLocaleString()}
+                      {/* {alert.createdAt} */}
                     </td>
                     <td className="px-6 py-3 border border-black">
                       {targetName}

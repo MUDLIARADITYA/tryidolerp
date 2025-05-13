@@ -413,6 +413,7 @@ const Viewall = () => {
                         <a
                           className="text-yellow-600 hover:underline"
                           href={`http://localhost:5000/uploads/${record.image}`}
+                          // href={`https://attendance-backend-hs02.onrender.com/uploads/${record.image}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >

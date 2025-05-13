@@ -200,8 +200,8 @@ function AttendancePage() {
 
     try {
       const response = await axios.post(
-        // "https://attendancebackend-5j69.onrender.com/api/attendance/checkin",
         "http://localhost:5000/api/attendance/checkin",
+        // "https://attendance-backend-hs02.onrender.com/api/attendance/checkin",
         checkInData,
         {
           headers: {
@@ -304,8 +304,8 @@ function AttendancePage() {
 
     try {
       const response = await axios.post(
-        // "https://attendancebackend-5j69.onrender.com/api/attendance/checkout",
         "http://localhost:5000/api/attendance/checkout",
+        // "https://attendance-backend-hs02.onrender.com/api/attendance/checkout",
         checkOutData,
         {
           headers: {

@@ -28,7 +28,7 @@ const Navbar = () => {
     const fetchProfile = async (token) => {
       try {
         const response = await axios.get(
-          // "https://attendancebackend-5j69.onrender.com/api/auth/profile",
+          // "https://attendance-backend-hs02.onrender.com/api/auth/profile",
           "http://localhost:5000/api/auth/profile",
           {
             headers: {

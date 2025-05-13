@@ -15,7 +15,8 @@ const createAlert = async (req, res) => {
             title,
             message,
             createdBy: req.user._id, // Admin ID from protect middleware
-            targetUser: targetUser || null, // If no targetUser, it is for all users
+            // targetUser: targetUser || null, // If no targetUser, it is for all users
+            targetUser: targetUser && targetUser !== "For All" ? targetUser : null, // If no targetUser, it is for all users
         });
 
         await alert.save();
@@ -53,10 +54,17 @@ const getAllAlerts = async (req, res) => {
 const getUserAlerts = async (req, res) => {
     try {
         const userId = req.user._id; // From protect middleware
+        const userCreatedAt = req.user.createdAt;
+        console.log(userCreatedAt);
+        
 
         // Find alerts meant for the specific user or for all users
         const alerts = await Alert.find({
-            $or: [{ targetUser: userId }, { targetUser: null }],
+            createdAt: { $gte: userCreatedAt }, // Only alerts after user registration
+            $or: [
+                { targetUser: userId }, 
+                { targetUser: null }
+            ],
         })
             .populate('createdBy', 'name email') // Populate admin details
             .sort({ createdAt: -1 });

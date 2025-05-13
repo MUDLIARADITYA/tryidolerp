@@ -110,6 +110,7 @@ const Leaves = () => {
       // await DoLeave(leaveId, action);
       await axios.put(
         `http://localhost:5000/api/leave/${leaveId}`,
+        // `https://attendance-backend-hs02.onrender.com/api/leave/${leaveId}`,
         {
           status: action,
           reason: reason,

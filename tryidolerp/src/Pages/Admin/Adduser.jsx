@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:5000/api/auth",
+  // baseURL: "https://attendance-backend-hs02.onrender.com/api/auth",
 });
 
 // Attach token to every request
@@ -37,6 +38,7 @@ const AddUser = () => {
   // Load users from MongoDB
   useEffect(() => {
     axiosInstance.get("http://localhost:5000/api/auth/all")
+    // axiosInstance.get("https://attendance-backend-hs02.onrender.com/api/auth/all")
   .then(res => {
     // console.log("GET /all response:", res.data);  
     const users = Array.isArray(res.data.users) ? res.data.users : res.data;
@@ -106,6 +108,13 @@ const AddUser = () => {
   const handleView = (user) => {
     setViewUser(user);
   };
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(prev => !prev);
+  };
+
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -206,7 +215,7 @@ const AddUser = () => {
               onChange={handleInputChange} 
               className="w-full px-3 py-2 border rounded" required 
             />
-            <input 
+            {/* <input 
               type="password" 
               name="password" 
               placeholder="Password" 
@@ -214,7 +223,32 @@ const AddUser = () => {
               onChange={handleInputChange} 
               className="w-full px-3 py-2 border rounded" 
               required 
-            />
+            /> */}
+            
+            <div className="relative w-full">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border rounded pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-2 flex items-center text-gray-600"
+                tabIndex={-1}
+              >
+                {showPassword ? (
+                  <span>👁️</span> 
+                ) : (
+                  <span>👁️</span>
+                )}
+              </button>
+            </div>
+
             <input 
               type="text" 
               name="employeeId" 
